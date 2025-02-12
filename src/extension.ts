@@ -54,7 +54,7 @@ Include any critical details.
  * Activate the extension.
  */
 export function activate(context: vscode.ExtensionContext) {
-  outputChannel = vscode.window.createOutputChannel("Auto Documentation");
+  outputChannel = vscode.window.createOutputChannel("DocWeaver");
   outputChannel.appendLine("Extension Activated: Auto Project Documentation");
 
   // Register the main command to document the project.
@@ -65,7 +65,7 @@ export function activate(context: vscode.ExtensionContext) {
         await documentProject();
       } catch (error) {
         vscode.window.showErrorMessage(
-          "Error generating documentation. See 'Auto Documentation' output for details."
+          "Error generating documentation. See 'DocWeaver' output for details."
         );
         logError(`documentProject error: ${errorToMessage(error)}`);
       }
