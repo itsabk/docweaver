@@ -1,0 +1,172 @@
+{
+  "name": "docweaver",
+  "publisher": "itsabk",
+  "displayName": "DocWeaver",
+  "description": "Create comprehensive project documentation using AI-powered file analysis and intelligent project summaries.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "activationEvents": [
+    "onCommand:extension.documentProject",
+    "onCommand:extension.openDocumentationSettings",
+    "onView:projectStructureView"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.documentProject",
+        "title": "Generate Project Documentation"
+      },
+      {
+        "command": "extension.openDocumentationSettings",
+        "title": "Open Documentation Settings"
+      },
+      {
+        "command": "extension.refreshProjectStructure",
+        "title": "Refresh Project Structure",
+        "icon": "$(refresh)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "docweaver-explorer",
+          "title": "DocWeaver",
+          "icon": "$(book)"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "extension.refreshProjectStructure",
+          "when": "view == projectStructureView",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "DocWeaver Configuration",
+      "properties": {
+        "docweaver.apiProvider": {
+          "type": "string",
+          "enum": [
+            "ollama",
+            "openai"
+          ],
+          "default": "ollama",
+          "description": "Choose the AI provider for code summary generation."
+        },
+        "docweaver.ollamaUrl": {
+          "type": "string",
+          "default": "http://localhost:11434",
+          "description": "Base URL for Ollama local server."
+        },
+        "docweaver.ollamaModel": {
+          "type": "string",
+          "default": "phi4",
+          "description": "Model name or path for Ollama."
+        },
+        "docweaver.openaiKey": {
+          "type": "string",
+          "default": "",
+          "description": "OpenAI API key."
+        },
+        "docweaver.ignorePatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Additional glob patterns to ignore (in addition to .gitignore)."
+        },
+        "docweaver.maxFileSizeBytes": {
+          "type": "number",
+          "default": 0,
+          "description": "Skip files larger than this size in bytes (0 = no limit)."
+        },
+        "docweaver.saveToFile": {
+          "type": "boolean",
+          "default": true,
+          "description": "If true, saves the generated documentation to a file in the workspace."
+        },
+        "docweaver.outputFileName": {
+          "type": "string",
+          "default": "DOCWEAVER_OUTPUT.md",
+          "description": "Name of the file to save the generated documentation (when saveToFile=true)."
+        },
+        "docweaver.concurrency": {
+          "type": "number",
+          "default": 2,
+          "description": "Number of parallel file summaries to run (requires concurrency logic in code)."
+        },
+        "docweaver.filePrompt": {
+          "type": "string",
+          "default": "Please analyze the following code and provide a structured technical summary covering imports, functions/classes, overall functionality, purpose, and any additional notes.",
+          "description": "Custom prompt used for generating file summaries. Customize as needed."
+        },
+        "docweaver.projectPrompt": {
+          "type": "string",
+          "default": "Given the file summaries and project structure, weave a comprehensive technical documentation overview including project overview, technical architecture, implementation details, and module interactions.",
+          "description": "Custom prompt used for generating the project summary. Customize as needed."
+        },
+        "docweaver.enableStreamingFeedback": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable real-time streaming feedback from the AI provider if supported."
+        },
+        "docweaver.showProjectStructureTree": {
+          "type": "boolean",
+          "default": false,
+          "description": "Display a visual project structure tree in the sidebar instead of raw JSON."
+        },
+        "docweaver.enableCustomizationWizard": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable a settings wizard to assist in customizing documentation generation options."
+        }
+      }
+    },
+    "views": {
+      "docweaver-explorer": [
+        {
+          "id": "projectStructureView",
+          "name": "Project Structure",
+          "contextualTitle": "Project Structure"
+        }
+      ],
+      "explorer": [
+        {
+          "id": "docweaverProjectTree",
+          "name": "Project Structure"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint . --ext .ts",
+    "test": "mocha out/test --recursive --reporter mocha-multi-reporters --reporter-options configFile=.mocharc.json"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.96.0",
+    "@typescript-eslint/eslint-plugin": "^8.22.0",
+    "@typescript-eslint/parser": "^8.22.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.19.0",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "ignore": "^7.0.3",
+    "marked": "^15.0.7"
+  }
+}
