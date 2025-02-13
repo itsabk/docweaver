@@ -13,6 +13,7 @@ import {
 } from "./api";
 import { buildProjectStructure } from "./projectStructure";
 import { logError, logInfo, errorToMessage, getWebviewContent } from "./utils";
+import { fileSummariesMap } from "./fileSummariesStore";
 
 export async function documentProject() {
   const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -100,8 +101,7 @@ export async function documentProject() {
   // Build project structure
   const projectStructure = buildProjectStructure(filteredFiles, rootPath);
 
-  // Build a Map of file summaries for quick lookup
-  const fileSummariesMap = new Map<string, string>();
+  // Update the shared file summaries store.
   fileSummaries.forEach((fs) => {
     fileSummariesMap.set(fs.file, fs.summary);
   });
@@ -153,7 +153,7 @@ export async function documentProject() {
     }
   }
 
-  // Display the documentation in a custom webview panel.
+  // Display the overall documentation in a webview panel.
   showDocumentationWebview(documentationContent);
 }
 

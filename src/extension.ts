@@ -5,6 +5,7 @@ import {
   buildProjectStructure,
 } from "./projectStructure";
 import { errorToMessage, logError, setOutputChannel } from "./utils";
+import { fileSummariesMap } from "./fileSummariesStore";
 
 let outputChannel: vscode.OutputChannel;
 let projectStructureProvider: ProjectStructureProvider;
@@ -41,6 +42,26 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
   context.subscriptions.push(settingsDisposable);
+
+  // Register command to open file documentation from the tree view.
+  const openFileDocDisposable = vscode.commands.registerCommand(
+    "extension.openFileDocumentation",
+    async (relativePath: string) => {
+      const summary = fileSummariesMap.get(relativePath);
+      if (!summary) {
+        vscode.window.showErrorMessage(
+          `No documentation available for ${relativePath}`
+        );
+        return;
+      }
+      const doc = await vscode.workspace.openTextDocument({
+        content: summary,
+        language: "markdown",
+      });
+      vscode.window.showTextDocument(doc, { preview: false });
+    }
+  );
+  context.subscriptions.push(openFileDocDisposable);
 
   // Initialize and register the project structure tree view.
   projectStructureProvider = new ProjectStructureProvider({});

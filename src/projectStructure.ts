@@ -49,25 +49,37 @@ export class ProjectStructureProvider
       return Promise.resolve([]);
     }
     if (!element) {
-      return Promise.resolve(this.convertToProjectItems(this.treeData));
+      // For root items, pass empty parent path
+      return Promise.resolve(this.convertToProjectItems(this.treeData, ""));
     } else {
       return Promise.resolve(
-        this.convertToProjectItems(element.children || {})
+        this.convertToProjectItems(element.children || {}, element.relativePath)
       );
     }
   }
 
-  private convertToProjectItems(obj: any): ProjectItem[] {
+  private convertToProjectItems(obj: any, parentPath: string): ProjectItem[] {
     return Object.keys(obj).map((key) => {
       const childrenObj = obj[key];
       const hasChildren = Object.keys(childrenObj).length > 0;
+      // Compute the full relative path for the current item.
+      const relativePath = parentPath ? `${parentPath}${path.sep}${key}` : key;
       const item = new ProjectItem(
         key,
         hasChildren
           ? vscode.TreeItemCollapsibleState.Collapsed
           : vscode.TreeItemCollapsibleState.None,
-        childrenObj
+        childrenObj,
+        relativePath
       );
+      // If this is a file (no children), add a command to open its documentation.
+      if (!hasChildren) {
+        item.command = {
+          command: "extension.openFileDocumentation",
+          title: "Open Documentation",
+          arguments: [relativePath],
+        };
+      }
       return item;
     });
   }
@@ -75,13 +87,16 @@ export class ProjectStructureProvider
 
 export class ProjectItem extends vscode.TreeItem {
   public children: any;
+  public relativePath: string;
   constructor(
     label: string,
     collapsibleState: vscode.TreeItemCollapsibleState,
-    children: any
+    children: any,
+    relativePath: string
   ) {
     super(label, collapsibleState);
     this.children = children;
+    this.relativePath = relativePath;
     this.contextValue =
       collapsibleState === vscode.TreeItemCollapsibleState.None
         ? "file"
