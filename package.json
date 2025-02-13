@@ -17,16 +17,20 @@
     "commands": [
       {
         "command": "extension.documentProject",
-        "title": "Generate Project Documentation"
+        "title": "DocWeaver: Generate Project Documentation"
       },
       {
         "command": "extension.openDocumentationSettings",
-        "title": "Open Documentation Settings"
+        "title": "DocWeaver: Open Documentation Settings"
       },
       {
         "command": "extension.refreshProjectStructure",
-        "title": "Refresh Project Structure",
+        "title": "DocWeaver: Refresh Project Structure",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "extension.openFileDocumentation",
+        "title": "DocWeaver: Open File Documentation"
       }
     ],
     "viewsContainers": {
@@ -105,13 +109,13 @@
         },
         "docweaver.filePrompt": {
           "type": "string",
-          "default": "Please analyze the following code and provide a structured technical summary covering imports, functions/classes, overall functionality, purpose, and any additional notes.",
-          "description": "Custom prompt used for generating file summaries. Customize as needed."
+          "default": "Analyze the following code snippet and provide a concise technical summary. Include:\n\n- **Imports:** List each import with its purpose.\n- **Functions/Classes:** For each, include the name, parameters (with types if available), return value, and a brief description.\n- **Overall Functionality:** Summarize how the code operates.\n- **Additional Notes:** Highlight key details, assumptions, or edge cases.",
+          "description": "Custom prompt used for generating file summaries. Customize as needed. (Default prompt is loaded from the prompts file.)"
         },
         "docweaver.projectPrompt": {
           "type": "string",
-          "default": "Given the file summaries and project structure, weave a comprehensive technical documentation overview including project overview, technical architecture, implementation details, and module interactions.",
-          "description": "Custom prompt used for generating the project summary. Customize as needed."
+          "default": "Using the file summaries and project structure below, generate a concise technical documentation overview. Include:\n\n- **Project Overview:** Summarize the core purpose, main functionality, and target audience.\n- **Technical Architecture:** Outline the system design, component relationships, and data flow.\n- **Implementation Details:** Identify critical files, key classes/interfaces, and major dependencies.\n- **Module Interactions:** Describe inter-file dependencies, API contracts, and data exchange patterns.",
+          "description": "Custom prompt used for generating the project summary. Customize as needed. (Default prompt is loaded from the prompts file.)"
         },
         "docweaver.enableStreamingFeedback": {
           "type": "boolean",
