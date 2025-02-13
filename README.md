@@ -1,5 +1,7 @@
 # DocWeaver - Automated Project Documentation for VS Code
 
+![DocWeaver Logo](https://raw.githubusercontent.com/itsabk/docweaver/dec1d41969f0b2588e91d193d16600074a889870/assets/logo.jpg)
+
 ## Overview
 
 DocWeaver is a VS Code extension designed to generate structured and concise documentation for projects. It automatically analyzes code files, extracts key technical details, and compiles comprehensive documentation, including project structure and inter-file relationships.
