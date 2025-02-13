@@ -6,8 +6,9 @@
     "type": "git",
     "url": "https://github.com/itsabk/docweaver.git"
   },
+  "icon": "assets/logo.jpg",
   "description": "Create comprehensive project documentation using AI-powered file analysis and intelligent project summaries.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "engines": {
     "vscode": "^1.96.0"
   },
