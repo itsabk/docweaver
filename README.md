@@ -1,6 +1,6 @@
 # DocWeaver - Automated Project Documentation for VS Code
 
-![DocWeaver Logo](https://raw.githubusercontent.com/itsabk/docweaver/dec1d41969f0b2588e91d193d16600074a889870/assets/logo.jpg)
+<img src="https://raw.githubusercontent.com/itsabk/docweaver/dec1d41969f0b2588e91d193d16600074a889870/assets/logo.jpg" alt="DocWeaver Logo" width="200" height="200" style="display: block; margin: 20px auto;">
 
 ## Overview
 
